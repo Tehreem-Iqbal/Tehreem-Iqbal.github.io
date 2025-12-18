@@ -72,7 +72,6 @@ go install github.com/go-delve/delve/cmd/dlv@latest
 ```
 
 ### **Configure VSCode**
-The following VSCode configurations ensure Sliver builds with the correct tags and debug symbols.
 Create `.vscode/launch.json` file and add the following configuration: 
 ```json
 {
@@ -136,12 +135,12 @@ sliver > multiplayer
 [*] Multiplayer mode enabled
 ```
 
-I have created an operator named **aris**. Import the client configuration file in the Sliver client:
+Here, I have created an operator named **aris**. Import the client configuration file in the sliver client:
 ```
 ~/sliver/sliver-client import ~/sliver/server/aris_127.0.0.1.cfg 
 ```
 
-This will copy place the operator config in  ~/.sliver-client/configs.
+This will copy the operator config in  `~/.sliver-client/configs`.
 Now, Run and **Debug>Launch client**
 ![Image](/assets/images/Posts/Setting%20Up%20debugging%20env%20for%20sliver/demo03.png)
 
@@ -177,11 +176,11 @@ sliver > http --lhost 192.168.0.106 --lport 8080
 sliver > 
 ```
 
-Sliver will store the implant source in: `~/.sliver/slivers/windows/amd64/<GENERATED IMPANT NAME>/src`. In this case it has stored it in `~/.sliver/slivers/windows/amd64/ROUND_OPIUM/src`. Open the implant source code folder in a new vscode windows.
+Sliver will store the implant source in: `~/.sliver/slivers/windows/amd64/<GENERATED IMPANT NAME>/src`. In this case its stored in `~/.sliver/slivers/windows/amd64/ROUND_OPIUM/src`. Open the implant source code folder in a new vscode windows.
 
 #### **Configure VSCode for Remote Debugging**
 
-Under `src/` folder, create `.vscode/launch.json` and add the following configuration:
+Under `src/`, create `.vscode/launch.json` and add the following configuration:
 ```json
 {
     "name": "Debug Implant",
@@ -210,10 +209,13 @@ In `.vscode/settings.json` add:
 Transfer the implant to victim machine, navigate to the directory containing the generated implant and start dlv:
 ```cmd
 dlv exec --api-version=2 --headless --listen REMOTE_HOST:REMOTE_PORT --log .\<GENERATED IMPLANT>.exe
+
 ```
 
 ![Image](/assets/images/Posts/Setting%20Up%20debugging%20env%20for%20sliver/demo04.png)
-In my setup, the Delve server will run on the Windows machine at 192.168.0.108:7077. Update `launch.json` accordingly.
+In my setup, the Delve server will run on the Windows machine at 192.168.0.109:7077. Update `launch.json` accordingly:
+
+![Image](/assets/images/Posts/Setting%20Up%20debugging%20env%20for%20sliver/demo08.png)
 
 Attach VSCode from the Linux machine using the above configuration. Go to Run and **Debug >Debug implant** to start debugging the implant. If everything is configured correctly, you should see the connection appear on your C2 server:
 
@@ -222,7 +224,7 @@ Toggle a breakpoint anywhere in implant code you want to debug. Here I have plac
 
 ![Image](/assets/images/Posts/Setting%20Up%20debugging%20env%20for%20sliver/demo05.png)
 
-To debug the server, place the breakpoint inside `sliver/client/command/info/info.go` and run info command and breakpoint will hit:
+To debug the server, place the breakpoint inside `sliver/client/command/info/info.go` and run info command in client console and breakpoint will hit:
 ![Image](/assets/images/Posts/Setting%20Up%20debugging%20env%20for%20sliver/demo06.png)
 
 
