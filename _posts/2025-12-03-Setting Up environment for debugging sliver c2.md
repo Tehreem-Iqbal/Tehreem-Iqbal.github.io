@@ -37,7 +37,7 @@ Sliver have their [documentation](https://sliver.sh/docs?name=Compile+from+Sourc
 First dowload your platform's version of [protoc](https://github.com/protocolbuffers/protobuf/releases/latest) and extract it. Here it is installed under `/opt/protoc`.
 ```bash
 wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protoc-3.19.4-linux-x86_64.zip -O /tmp/protoc.zip
-unzip /tmp/protoc.zip -d -d $HOME/.local
+unzip /tmp/protoc.zip -d $HOME/.local
 echo 'export PATH=$PATH:$HOME/.local/bin' >> ~/.bashrc 
 source ~/.bashrc
 ```
