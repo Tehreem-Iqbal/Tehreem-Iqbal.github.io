@@ -1,4 +1,10 @@
 # MobileGuard KYC Verification Bypass
+---
+title: WriteUp: MobileGuard KYC Verification Bypass
+date: 2026-04-06 03:32:51 +5000
+categories: [Android Security, CTF Writeups]
+tags: [MobileGuard, KYC bypass, face embedding, JWT forgery]    
+---
 ## Challenge Description
 Your goal is to analyze the app's identity flow and find a way to unlock the hidden flag, by impersonating the whitelisted users, which are the founder and co-founders of Mobile Hacking Lab.
 
@@ -13,7 +19,7 @@ The `MainActivity` constructor generates a random session ID (`UUID.randomUUID()
 **Phase one is liveness.** There's a class called `LivenessDetector` that loads a MediaPipe face landmark model and watches for two things: eye blinks (both eyes need to score above 0.4 on the blendshape, twice) and a head turn (yaw angle above ~28 degrees from the transformation matrix). Standard anti-spoofing stuff. Once you blink twice and turn your head, it flips `isLivenessPassed` to true.
 
 The catch? This all happens on the device locally. The server never checks if someone actually blinked or liveness check was passed or not.
-<!-- ss: LivenessDetector code -->
+
 **Phase two is server verification.** After liveness passes, the app talks to a backend at `2026.mhc-ctf.workers.dev` in three steps:
 1. Sends a JWT to `/api/liveness`, gets back a `session_hmac`
 ![Image](/assets/images/Posts/CTF%20writeup%20-%20Mobilegurd%20kyc%20verification%20bypass/liveness.png)
