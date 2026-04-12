@@ -1,8 +1,8 @@
 ---
 title: CTF WriteUp: KYC Verification Bypass
-date: 2026-04-06 03:32:51 +5000
+date: 2026-04-12 03:32:51 +5000
 categories: [Android Security, CTF Writeups]
-tags: [MobileGuard, KYC bypass, face embedding, JWT forgery]    
+tags: [KYC bypass, Identity verification bypass, face embedding]    
 ---
 ## Introduction
 In this writeup, I'll walk through the process of solving the "KYC verification bypass" challenge from the Mobile Hacking Lab CTF. The challenge revolves around an Android app called MobileGuard that implements a KYC flow using face recognition and liveness detection. The goal is to bypass the KYC verification and retrieve a hidden flag by impersonating one of the whitelisted users.
