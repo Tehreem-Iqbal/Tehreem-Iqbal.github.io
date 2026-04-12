@@ -27,11 +27,11 @@ After loading the APK into JADX, most of the interesting code is in `MainActivit
    - If verified, get the flag ```/api/get-flag```
 
 
-**Liveness check (Client side)** The app uses `LivenessDetector` that loads a MediaPipe face landmark model and checks: eye blinks and a head turn. Once the conditions are met, it flips `isLivenessPassed` to true.
+#### **Liveness check (Client side)** The app uses `LivenessDetector` that loads a MediaPipe face landmark model and checks: eye blinks and a head turn. Once the conditions are met, it flips `isLivenessPassed` to true.
 
 **Issue:** **The server does not validate whether liveness checks actually occurred** 
 
-**Server verification flow.** After liveness passes, the app talks to a backend at `2026.mhc-ctf.workers.dev` in three steps:
+#### **Server verification flow.** After liveness passes, the app talks to a backend at `2026.mhc-ctf.workers.dev` in three steps:
 1. Sends a JWT to `/api/liveness`, gets back a `session_hmac`
 ![Image](/assets/images/Posts/CTF%20writeup%20-%20Mobilegurd%20kyc%20verification%20bypass/liveness.png)
 2. Generates a face embedding and sends it with the HMAC to `/api/verify-face`, gets back a `face_token` (if the face embedding matches a whitelisted user)
@@ -39,7 +39,7 @@ After loading the APK into JADX, most of the interesting code is in `MainActivit
 3. Sends the `face_token` to `/api/get_flag`, gets the flag
 ![Image](/assets/images/Posts/CTF%20writeup%20-%20Mobilegurd%20kyc%20verification%20bypass/getflag.png)
 
-## Generating a forged JWT for liveness bypass
+#### Generating a forged JWT for liveness bypass
 In `KYCApiClient.generateLivenessToken()`, the application constructs a JWT with the following claims:
 
 ```json
@@ -71,7 +71,7 @@ This means if I can get a photo of the whitelisted user and run it through the s
 6. Access protected endpoint
 
 
-### generatefaceembedding.py
+#### generatefaceembedding.py
 The script replicates what the app's `FaceEmbedder` does on-device. It takes a photo, runs it through the same preprocessing and TFLite model extracted from the APK, and dumps the resulting 512-dim embedding vector to a JSON file.
 
 ```bash
@@ -80,14 +80,14 @@ python3 generatefaceembedding.py --photo whitelisteduser.jpeg --model assets/fac
 ```
 This produces the same 512-dimensional embedding expected by the server.
 
-### kyc.py
+#### kyc.py
 The kyc.py script handles the server side. It forges a JWT liveness token using the hardcoded secret, sends it to `/api/liveness` for the session HMAC, submit the generated embedding to `/api/verify-face`, retrieves the face_token, and fetches the flag from `/api/get_flag`.
 
 ```bash
 python3 kyc.py --embedding whilelistembedding.json
 ```
 
-## Finding the Right Whitelisted users
+#### Finding the Right Whitelisted users
 As the challenge says the whitelisted users are the founder and co-founders of Mobile Hacking Lab. A quick search on the website's about page revealed three names: Umit Aksu, Jelmer Hulsman, and Arno Miedema. I found their photos online, ran them through the embedding generation script, and submitted each embedding to the server.
 
 **Umit Aksu** Response: `"similarity": 0.417, "Similarity too low"`.
