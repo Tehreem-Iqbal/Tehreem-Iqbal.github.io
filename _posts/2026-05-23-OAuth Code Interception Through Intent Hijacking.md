@@ -53,13 +53,12 @@ Normally, exchanging an authorization code requires a client secret to prove the
 
 #### The Attack in Action
 
-Installed **both** apps (vulnerable app and attacker app) and initiated the login flow in the legitimate app:
-1. User opens the legitimate app and clicks "Login with Google"
-2. Google's OAuth consent screen appears - user authenticates
-3. User grants permission for the app to access their profile
-4. Google generates an authorization code and redirects to `customscheme://oauth/callback?code=XXXXX&state=YYYY&provider=google`
-5. **Android shows a disambiguation dialog** listing both apps that can handle this URI
-6. User selects the malicious app, the callback goes to the attacker app instead
+Install **both** apps (vulnerable app and attacker app) and initiated the login flow in the legitimate app:
+1. Google's OAuth consent screen appears - user authenticates
+2. User grants permission for the app to access their profile
+3. Google generates an authorization code and redirects to `customscheme://oauth/callback?code=XXXXX&state=YYYY&provider=google`
+4. Android shows a disambiguation dialog listing both apps that can handle this URI
+5. User selects the malicious app, the callback goes to the attacker app instead
 
 ![Image](/assets/images/Posts/OAuth/Im5.png)
 
@@ -91,8 +90,7 @@ code_challenge = BASE64URL(SHA256(code_verifier))
 
 ![Image](/assets/images/Posts/OAuth/oauthwithpkce.png)
 
+Now, even if the attacker intercepts the authorization code, it does not have a valid `code_verifier` that can match the `code_challenge` sent to the authorization server in the previous request. Without a `code_verifier` that matches the stored `code_challenge`, the authorization server rejects the exchange. PKCE cryptographically binds the  authorization code to the app that requested it, making an intercepted code useless without the code_verifier.
 
 
-Custom URI schemes have no ownership verification, making OAuth callbacks interceptable by any app on the device. Without PKCE, an intercepted authorization code is all an attacker needs, no additional credentials required, leading directly to a valid access token and full account access.
 
-PKCE cryptographically binds the authorization code to the app that requested it, making an intercepted code useless without the `code_verifier`.
