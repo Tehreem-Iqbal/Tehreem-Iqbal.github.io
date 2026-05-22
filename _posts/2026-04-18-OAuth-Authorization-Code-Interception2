@@ -7,7 +7,7 @@ published: false
 ---
 
 ## Introduction
-
+ehyy
 This write-up documents a real-world vulnerability discovered in a telecom Android application where poor OAuth implementation combined with insecure deep link handling allowed an attacker to intercept authorization codes, exchange them for JWT access tokens, and gain full account access.
 
 ## The Target Application
