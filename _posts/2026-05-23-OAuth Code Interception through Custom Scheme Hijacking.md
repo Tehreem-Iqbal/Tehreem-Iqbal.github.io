@@ -1,5 +1,5 @@
 ---
-title: OAuth Code Interception Through Intent Hijacking
+title: OAuth Code Interception through Custom Scheme Hijacking
 date: 2026-05-23 02:05:00 +0500
 categories: [Mobile Security]
 tags: [OAuth, Authorization Code Interception, PKCE, Mobile Security, Deep Links Vulnerabilities] 
@@ -53,7 +53,7 @@ Normally, exchanging an authorization code requires a client secret to prove the
 
 #### The Attack in Action
 
-Install **both** apps (vulnerable app and attacker app) and initiated the login flow in the legitimate app:
+Install both apps (vulnerable app and attacker app) and initiated the login flow in the legitimate app:
 1. Google's OAuth consent screen appears - user authenticates
 2. User grants permission for the app to access their profile
 3. Google generates an authorization code and redirects to `customscheme://oauth/callback?code=XXXXX&state=YYYY&provider=google`
